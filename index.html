@@ -196,10 +196,10 @@
 
 <script>
 /* ===================== 설정 ===================== */
-var SUPA_URL = 'https://ybgoglomjcurucnzsqce.supabase.co';
-var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InliZ29nbG9tamN1cnVjbnpzcWNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1NDM1NzQsImV4cCI6MjA5MTExOTU3NH0.P3fPsfLuGX44eZeFpMRM3bsMnL1KMaXMZiKbx_rAW8U';
-var REFRESH_MS = 15000;          // 15초마다 자동 갱신
-var KST_OFFSET = 9 * 60;         // 한국시간(UTC+9), 분 단위
+// API는 Supabase 키가 들어있는 bnct-safety 프로젝트에 둔다(여기 safety-dash-board가 아님).
+var API_URL = 'https://bnct-safety.vercel.app/api/list-permits';
+var REFRESH_MS = 15000;              // 15초마다 자동 갱신
+var KST_OFFSET = 9 * 60;             // 한국시간(UTC+9), 분 단위
 
 /* ===================== 시간 유틸 ===================== */
 function nowKST(){ return new Date(Date.now() + (KST_OFFSET + new Date().getTimezoneOffset()) * 60000); }
@@ -321,17 +321,15 @@ function updateDayTitle(){
 
 async function load(){
   updateDayTitle();
-  var bounds = kstDayBoundsUTC(selectedDate());
-  var url = SUPA_URL + '/rest/v1/permits'
-    + '?select=token,company_name,project_name,managers,form_fields,worker_count,created_at,submit_date,status'
-    + '&and=(created_at.gte.' + encodeURIComponent(bounds[0]) + ',created_at.lt.' + encodeURIComponent(bounds[1]) + ')'
-    + '&order=created_at.asc';
+  var url = API_URL + '?date=' + encodeURIComponent(selectedDate());
   try{
-    var res = await fetch(url, { headers:{ apikey:SUPA_KEY, Authorization:'Bearer '+SUPA_KEY }});
+    var res = await fetch(url, { cache:'no-store' });
     if(!res.ok){ throw new Error('HTTP '+res.status+' '+(await res.text()).slice(0,200)); }
-    var data = await res.json();
+    var json = await res.json();
+    if(json && json.success === false){ throw new Error(json.error || '서버 오류'); }
+    var data = (json && Array.isArray(json.permits)) ? json.permits : [];
     document.getElementById('errbar').style.display = 'none';
-    render(Array.isArray(data) ? data : []);
+    render(data);
     var k = nowKST();
     document.getElementById('updated').textContent = '최근 갱신 '+pad(k.getHours())+':'+pad(k.getMinutes())+':'+pad(k.getSeconds());
     document.getElementById('liveTxt').textContent = '실시간 연동';
@@ -339,7 +337,7 @@ async function load(){
     var bar = document.getElementById('errbar');
     bar.style.display = 'block';
     bar.innerHTML = '⚠ 데이터를 불러오지 못했습니다 — '+esc(err.message)+
-      '<br>· Supabase permits 테이블 읽기 권한(RLS) 또는 네트워크를 확인하세요.';
+      '<br>· 이 화면을 배포 주소(bnct-safety.vercel.app/dashboard)로 열었는지, /api/list-permits 가 배포됐는지 확인하세요.';
     document.getElementById('liveTxt').textContent = '연결 오류';
   }
 }
