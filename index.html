@@ -6,352 +6,326 @@
 <title>BNCT 외주작업 현황</title>
 <style>
   :root{
-    --bg:#070b14;
-    --bg2:#0c1322;
-    --panel:#111a2e;
-    --panel2:#16223a;
-    --line:#22324f;
-    --txt:#eaf2ff;
-    --txt-dim:#8ba0c4;
-    --txt-mute:#5d7099;
-    --cyan:#22d3ee;
-    --cyan-soft:#0e7490;
-    --amber:#fbbf24;
-    --amber-bg:rgba(251,191,36,.12);
-    --green:#34d399;
-    --green-bg:rgba(52,211,153,.12);
-    --red:#f87171;
+    --bg:#0b1220; --panel:#111c30; --panel2:#16243d;
+    --line:rgba(255,255,255,.07); --text:#eaf0fb; --muted:#8da2c4;
+    --navy:#1d4ed8; --navy2:#3b82f6;
+    --warn:#f59e0b; --warn-bg:rgba(245,158,11,.14);
+    --ok:#22c55e; --ok-bg:rgba(34,197,94,.14);
+    --danger:#ef4444;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
   body{
-    font-family:'맑은 고딕','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
-    background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,.10), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(52,211,153,.08), transparent 55%),
-      var(--bg);
-    color:var(--txt);
-    min-height:100vh;
-    padding:clamp(16px,1.6vw,32px);
-    overflow-x:hidden;
+    font-family:'맑은 고딕','Malgun Gothic',system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 80% -10%,#16294a 0%,var(--bg) 60%);
+    color:var(--text); min-height:100vh; padding:26px 30px 50px;
   }
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size:26px 26px;
-  }
-  .wrap{position:relative;z-index:1;max-width:2400px;margin:0 auto;}
 
-  /* ===== HEADER ===== */
-  header{
-    display:flex;align-items:center;justify-content:space-between;gap:24px;
-    padding:clamp(14px,1.4vw,24px) clamp(18px,1.8vw,34px);
-    background:linear-gradient(180deg,var(--panel),var(--bg2));
-    border:1px solid var(--line);border-radius:18px;
-    box-shadow:0 18px 50px rgba(0,0,0,.45);
-  }
-  .brand{display:flex;align-items:center;gap:clamp(14px,1.2vw,22px);min-width:0;}
+  /* ===== Header ===== */
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:16px}
   .logo{
+    width:60px;height:60px;border-radius:14px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--navy),var(--navy2));
     display:flex;align-items:center;justify-content:center;
-    width:clamp(58px,4.4vw,84px);height:clamp(58px,4.4vw,84px);
-    border-radius:16px;flex-shrink:0;
-    background:linear-gradient(135deg,#0891b2,#155e75);
-    border:1px solid rgba(34,211,238,.45);
-    box-shadow:0 0 28px rgba(34,211,238,.30), inset 0 1px 0 rgba(255,255,255,.18);
-    font-weight:800;letter-spacing:1px;color:#eafcff;
-    font-size:clamp(15px,1.3vw,22px);
+    font-weight:900;font-size:20px;letter-spacing:1px;
+    box-shadow:0 8px 24px rgba(29,78,216,.35);
   }
-  .titles{min-width:0;}
-  .titles .t-sub{font-size:clamp(11px,.9vw,15px);color:var(--cyan);letter-spacing:3px;font-weight:700;}
-  .titles .t-main{font-size:clamp(22px,2.3vw,42px);font-weight:800;line-height:1.05;margin-top:2px;
-    text-shadow:0 2px 18px rgba(0,0,0,.5);white-space:nowrap;}
-  .titles .t-eng{font-size:clamp(10px,.8vw,13px);color:var(--txt-mute);letter-spacing:2px;margin-top:4px;}
+  .brand h1{font-size:30px;font-weight:900;line-height:1.15}
+  .brand .sub{font-size:13px;color:var(--muted);margin-top:4px;font-weight:600}
+  .brand .eng{font-size:11px;color:var(--muted);letter-spacing:.6px;margin-top:2px;opacity:.75}
 
-  .clockbox{text-align:right;flex-shrink:0;}
-  .clock{font-size:clamp(30px,3.4vw,62px);font-weight:800;line-height:1;letter-spacing:1px;
-    font-variant-numeric:tabular-nums;text-shadow:0 0 24px rgba(34,211,238,.25);}
-  .date{font-size:clamp(13px,1.1vw,20px);color:var(--txt-dim);margin-top:6px;font-weight:600;}
-  .live{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:clamp(11px,.85vw,14px);
-    color:var(--green);font-weight:700;letter-spacing:1px;}
-  .live .dot{width:9px;height:9px;border-radius:50%;background:var(--green);
-    box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:ping 1.8s infinite;}
-  @keyframes ping{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55);}70%{box-shadow:0 0 0 12px rgba(52,211,153,0);}100%{box-shadow:0 0 0 0 rgba(52,211,153,0);}}
+  .clockbox{text-align:right}
+  .clock{font-size:40px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:1px}
+  .today{font-size:14px;color:var(--muted);margin-top:2px;font-weight:600}
+  .live{
+    display:inline-flex;align-items:center;gap:7px;margin-top:8px;
+    padding:5px 12px;border-radius:999px;background:var(--ok-bg);
+    color:var(--ok);font-size:12px;font-weight:800;
+  }
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:blink 1.4s infinite}
+  .live.off{background:rgba(239,68,68,.14);color:var(--danger)}
+  .live.off .dot{background:var(--danger);animation:none}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
-  /* ===== SUMMARY STRIP ===== */
-  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.2vw,22px);margin:clamp(14px,1.4vw,24px) 0;}
+  /* ===== Stats ===== */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
   .stat{
-    background:linear-gradient(180deg,var(--panel),var(--bg2));
-    border:1px solid var(--line);border-radius:16px;
-    padding:clamp(14px,1.3vw,24px) clamp(18px,1.6vw,30px);
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
-    box-shadow:0 12px 34px rgba(0,0,0,.35);
+    background:linear-gradient(160deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-radius:18px;padding:22px 26px;
+    display:flex;flex-direction:column;gap:6px;
   }
-  .stat .lbl{font-size:clamp(13px,1.1vw,20px);color:var(--txt-dim);font-weight:700;letter-spacing:1px;}
-  .stat .num{font-size:clamp(38px,4.2vw,74px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;}
-  .stat.total .num{color:var(--cyan);}
-  .stat.prog .num{color:var(--amber);}
-  .stat.done .num{color:var(--green);}
-  .stat .unit{font-size:clamp(14px,1.1vw,22px);color:var(--txt-mute);font-weight:700;margin-left:4px;}
+  .stat .label{font-size:14px;color:var(--muted);font-weight:700}
+  .stat .num{font-size:46px;font-weight:900;line-height:1}
+  .stat .num small{font-size:18px;font-weight:800;color:var(--muted);margin-left:4px}
+  .stat.s1 .num{color:#fff}
+  .stat.s2 .num{color:var(--warn)}
+  .stat.s3 .num{color:var(--ok)}
 
-  /* ===== CONTROLS ===== */
-  .controls{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(12px,1.2vw,20px);flex-wrap:wrap;}
-  .controls .sec-title{font-size:clamp(16px,1.5vw,26px);font-weight:800;letter-spacing:1px;display:flex;align-items:center;gap:12px;}
-  .controls .sec-title::before{content:"";width:6px;height:clamp(20px,1.8vw,30px);border-radius:3px;background:var(--cyan);box-shadow:0 0 14px var(--cyan);}
-  .ctl-right{display:flex;align-items:center;gap:10px;}
-  .btn,.dateinput{
-    font-family:inherit;font-size:clamp(13px,1vw,17px);font-weight:700;color:var(--txt);
-    background:var(--panel2);border:1px solid var(--line);border-radius:11px;
-    padding:clamp(9px,.8vw,13px) clamp(14px,1.1vw,20px);cursor:pointer;transition:.15s;
+  /* ===== Controls ===== */
+  .ctrl{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:34px 0 16px;flex-wrap:wrap}
+  .ctrl h2{font-size:22px;font-weight:900}
+  .ctrl .right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  input[type=date],.btn{
+    font-family:inherit;font-size:14px;font-weight:700;
+    background:var(--panel2);color:var(--text);
+    border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;
   }
-  .btn:hover{background:#1d2c48;border-color:var(--cyan-soft);}
-  .dateinput{color-scheme:dark;}
-  .updated{font-size:clamp(11px,.85vw,15px);color:var(--txt-mute);font-weight:600;}
+  .btn:hover{border-color:var(--navy2)}
+  .btn.primary{background:var(--navy);border-color:var(--navy)}
+  input[type=date]{color-scheme:dark}
 
-  /* ===== ERROR BANNER ===== */
-  #errbar{display:none;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.4);
-    color:#fecaca;border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:clamp(13px,1vw,16px);line-height:1.5;}
+  #errbar{
+    display:none;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);
+    color:#fecaca;border-radius:12px;padding:14px 18px;font-size:14px;font-weight:600;line-height:1.6;margin-bottom:16px;
+  }
 
-  /* ===== CARDS GRID ===== */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:clamp(14px,1.3vw,24px);}
+  /* ===== Cards ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
   .card{
-    position:relative;overflow:hidden;
-    background:linear-gradient(180deg,var(--panel),var(--bg2));
-    border:1px solid var(--line);border-radius:18px;
-    padding:clamp(20px,1.7vw,30px) clamp(22px,1.9vw,34px);
-    box-shadow:0 16px 44px rgba(0,0,0,.4);
-    border-left:10px solid var(--amber);
+    position:relative;background:linear-gradient(160deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-left:5px solid var(--warn);
+    border-radius:16px;padding:20px 22px 18px;animation:pop .5s ease;
   }
-  .card.done{border-left-color:var(--green);}
-  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
-  .company{font-size:clamp(26px,2.5vw,46px);font-weight:800;line-height:1.1;letter-spacing:-.5px;
-    text-shadow:0 2px 14px rgba(0,0,0,.5);word-break:keep-all;}
-  .badge{flex-shrink:0;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
-    font-size:clamp(14px,1.15vw,20px);font-weight:800;letter-spacing:.5px;
-    padding:clamp(8px,.7vw,12px) clamp(13px,1.1vw,18px);border-radius:999px;}
-  .badge.prog{color:var(--amber);background:var(--amber-bg);border:1px solid rgba(251,191,36,.4);}
-  .badge.done{color:var(--green);background:var(--green-bg);border:1px solid rgba(52,211,153,.4);}
-  .badge .bdot{width:11px;height:11px;border-radius:50%;background:currentColor;}
-  .badge.prog .bdot{animation:blink 1.4s infinite;}
-  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .card.signed{border-left-color:var(--ok)}
+  @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card .company{font-size:24px;font-weight:900;line-height:1.25;padding-right:40px;word-break:keep-all}
+  .card .rows{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+  .card .row{display:flex;gap:9px;font-size:14.5px;color:#cdd9ef;align-items:flex-start}
+  .card .row .ic{width:18px;flex-shrink:0;opacity:.85}
+  .card .row .v{font-weight:700;color:var(--text);word-break:break-word}
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;margin-top:16px;
+    padding:7px 14px;border-radius:999px;font-size:13px;font-weight:900;
+    background:var(--warn-bg);color:var(--warn);
+  }
+  .badge .d{width:8px;height:8px;border-radius:50%;background:var(--warn);animation:blink 1.4s infinite}
+  .card.signed .badge{background:var(--ok-bg);color:var(--ok)}
+  .card.signed .badge .d{background:var(--ok);animation:none}
 
-  .rows{margin-top:clamp(16px,1.4vw,24px);display:grid;gap:clamp(10px,.9vw,15px);}
-  .row{display:flex;align-items:baseline;gap:14px;}
-  .row .k{flex-shrink:0;width:clamp(82px,7vw,118px);font-size:clamp(13px,1.05vw,18px);
-    color:var(--txt-mute);font-weight:700;letter-spacing:1px;}
-  .row .v{font-size:clamp(17px,1.5vw,26px);font-weight:700;color:var(--txt);line-height:1.25;word-break:keep-all;}
-  .row .v.time{color:var(--cyan);font-variant-numeric:tabular-nums;}
-  .row .v .chip{display:inline-block;margin-left:10px;font-size:clamp(11px,.85vw,14px);font-weight:700;
-    color:var(--txt-dim);background:rgba(255,255,255,.05);border:1px solid var(--line);
-    padding:3px 10px;border-radius:8px;vertical-align:middle;}
+  .del{
+    position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;
+    background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);
+    color:#fca5a5;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:.15s;
+  }
+  .del:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+  .del:disabled{opacity:.4;cursor:default}
 
-  .card.is-new{animation:flashin 1.1s ease-out 2;}
-  @keyframes flashin{0%{box-shadow:0 0 0 3px var(--cyan),0 16px 44px rgba(0,0,0,.4);transform:scale(1.012);}
-    100%{box-shadow:0 16px 44px rgba(0,0,0,.4);transform:scale(1);}}
-
-  /* ===== EMPTY ===== */
-  .empty{grid-column:1/-1;text-align:center;padding:clamp(60px,7vw,120px) 20px;
-    border:1.5px dashed var(--line);border-radius:20px;background:rgba(255,255,255,.015);}
-  .empty .ico{font-size:clamp(48px,5vw,86px);opacity:.5;}
-  .empty .msg{margin-top:18px;font-size:clamp(18px,1.8vw,30px);font-weight:700;color:var(--txt-dim);}
-  .empty .sub{margin-top:8px;font-size:clamp(13px,1.1vw,18px);color:var(--txt-mute);}
+  .empty{
+    grid-column:1/-1;text-align:center;color:var(--muted);
+    padding:70px 0;font-size:16px;font-weight:600;
+  }
+  .empty .big{font-size:42px;margin-bottom:10px;opacity:.5}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+
+  <div class="top">
     <div class="brand">
       <div class="logo">BNCT</div>
-      <div class="titles">
-        <div class="t-sub">자산관리팀</div>
-        <div class="t-main">외주작업 현황 대시보드</div>
-        <div class="t-eng">BUSAN NEW CONTAINER TERMINAL · CONTRACTOR WORK STATUS</div>
+      <div>
+        <h1>외주작업 현황 대시보드</h1>
+        <div class="sub">자산관리팀 · CONTRACTOR WORK STATUS</div>
+        <div class="eng">BUSAN NEW CONTAINER TERMINAL</div>
       </div>
     </div>
     <div class="clockbox">
       <div class="clock" id="clock">--:--:--</div>
-      <div class="date" id="today">----년 --월 --일</div>
-      <div class="live"><span class="dot"></span><span id="liveTxt">실시간 연동</span></div>
+      <div class="today" id="todayTxt">----년 --월 --일</div>
+      <div class="live" id="live"><span class="dot"></span><span id="liveTxt">실시간 연동</span></div>
     </div>
-  </header>
-
-  <div class="summary">
-    <div class="stat total"><span class="lbl">금일 작업 업체</span><span><span class="num" id="cTotal">0</span><span class="unit">팀</span></span></div>
-    <div class="stat prog"><span class="lbl">결재 진행중</span><span><span class="num" id="cProg">0</span><span class="unit">건</span></span></div>
-    <div class="stat done"><span class="lbl">승인 완료</span><span><span class="num" id="cDone">0</span><span class="unit">건</span></span></div>
   </div>
 
-  <div class="controls">
-    <div class="sec-title" id="dayTitle">금일 작업 현황</div>
-    <div class="ctl-right">
-      <input type="date" class="dateinput" id="datePick">
+  <div class="stats">
+    <div class="stat s1"><div class="label">금일 작업 업체</div><div class="num"><span id="stCompany">0</span><small>팀</small></div></div>
+    <div class="stat s2"><div class="label">작업진행중</div><div class="num"><span id="stPending">0</span><small>건</small></div></div>
+    <div class="stat s3"><div class="label">작업완료</div><div class="num"><span id="stDone">0</span><small>건</small></div></div>
+  </div>
+
+  <div class="ctrl">
+    <h2 id="gridTitle">금일 작업 현황</h2>
+    <div class="right">
+      <input type="date" id="datePick">
       <button class="btn" id="btnToday">오늘</button>
-      <button class="btn" id="btnRefresh">↻ 새로고침</button>
-      <span class="updated" id="updated">갱신 대기…</span>
+      <button class="btn primary" id="btnRefresh">↻ 새로고침</button>
     </div>
   </div>
 
   <div id="errbar"></div>
-  <div class="grid" id="grid"></div>
-</div>
+  <div class="grid" id="cards">
+    <div class="empty"><div class="big">⏳</div>갱신 대기…</div>
+  </div>
 
 <script>
 /* ===================== 설정 ===================== */
 // API는 Supabase 키가 들어있는 bnct-safety 프로젝트에 둔다(여기 safety-dash-board가 아님).
-var API_URL = 'https://bnct-safety.vercel.app/api/list-permits';
-var REFRESH_MS = 15000;              // 15초마다 자동 갱신
-var KST_OFFSET = 9 * 60;             // 한국시간(UTC+9), 분 단위
+var API_BASE   = 'https://bnct-safety.vercel.app';
+var LIST_URL   = API_BASE + '/api/list-permits';
+var DELETE_URL = API_BASE + '/api/delete-permit';
+var REFRESH_MS = 15000;          // 15초 자동 갱신
 
-/* ===================== 시간 유틸 ===================== */
-function nowKST(){ return new Date(Date.now() + (KST_OFFSET + new Date().getTimezoneOffset()) * 60000); }
-function pad(n){ return String(n).padStart(2,'0'); }
+/* ===================== 시간(KST) ===================== */
+function nowKST(){ var n=new Date(); return new Date(n.getTime()+(n.getTimezoneOffset()*60000)+(9*3600000)); }
+function pad(n){ return (n<10?'0':'')+n; }
 function kstDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-// 'YYYY-MM-DD'(KST 기준 하루)의 UTC 시작/끝 ISO 반환
-function kstDayBoundsUTC(ds){
-  var start = new Date(ds + 'T00:00:00+09:00');
-  var end   = new Date(start.getTime() + 24*60*60*1000);
-  return [start.toISOString(), end.toISOString()];
-}
-// ISO 문자열 -> KST 'HH:MM'
-function isoToKstHM(iso){
-  var d = new Date(iso);
-  var k = new Date(d.getTime() + (KST_OFFSET + d.getTimezoneOffset()) * 60000);
-  return pad(k.getHours())+':'+pad(k.getMinutes());
-}
-
-/* ===================== 시계 ===================== */
 function tickClock(){
-  var k = nowKST();
-  document.getElementById('clock').textContent = pad(k.getHours())+':'+pad(k.getMinutes())+':'+pad(k.getSeconds());
-  var wd = ['일','월','화','수','목','금','토'][k.getDay()];
-  document.getElementById('today').textContent = k.getFullYear()+'년 '+(k.getMonth()+1)+'월 '+k.getDate()+'일 ('+wd+')';
+  var k=nowKST();
+  document.getElementById('clock').textContent   = pad(k.getHours())+':'+pad(k.getMinutes())+':'+pad(k.getSeconds());
+  document.getElementById('todayTxt').textContent= k.getFullYear()+'년 '+pad(k.getMonth()+1)+'월 '+pad(k.getDate())+'일';
 }
-setInterval(tickClock, 1000); tickClock();
 
-/* ===================== 데이터 가공 ===================== */
-function parseManagers(raw){
-  if(!raw) return '—';
-  try{
-    var v = (typeof raw === 'string') ? JSON.parse(raw) : raw;
-    if(Array.isArray(v)){
-      return v.map(function(m){ return (m && typeof m==='object') ? (m.name||m.email||'') : m; })
-              .filter(Boolean).join('  ·  ') || '—';
+/* ===================== 유틸 ===================== */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+// 행(row) + 내부 JSON들을 전부 펼쳐서 키-값 한 뭉치로 모음 (필드명이 뭐든 잡히게)
+function flatten(row){
+  var bag={};
+  function dig(o){
+    if(!o || typeof o!=='object') return;
+    for(var k in o){
+      var v=o[k];
+      if(v && typeof v==='object'){ dig(v); }
+      else if(typeof v==='string' && (v.charAt(0)==='{'||v.charAt(0)==='[')){
+        try{ dig(JSON.parse(v)); }catch(e){ bag[k]=v; }
+      } else { if(bag[k]==null||bag[k]==='') bag[k]=v; }
     }
-    return String(v);
-  }catch(e){ return String(raw); }
+  }
+  dig(row);
+  return bag;
 }
-function parsePlace(formFieldsRaw, projectName){
-  try{
-    var ff = formFieldsRaw ? (typeof formFieldsRaw==='string'? JSON.parse(formFieldsRaw): formFieldsRaw) : {};
-    var p = ff && (ff['s1-place'] || ff['s1-work']);
-    if(p && String(p).trim()) return String(p).trim();
-  }catch(e){}
-  return (projectName && projectName.trim()) ? projectName.trim() : '—';
+// 후보 키 패턴들 중 처음 매칭되는 값
+function pick(bag, patterns){
+  for(var p=0;p<patterns.length;p++){
+    var re=patterns[p];
+    for(var k in bag){
+      if(re.test(k) && bag[k]!=null && String(bag[k]).trim()!==''){ return String(bag[k]); }
+    }
+  }
+  return '';
 }
-function startTime(rec){
-  if(rec.submit_date) return String(rec.submit_date).replace(/^\d{4}-\d{2}-\d{2}\s*/,''); // 'HH:MM'만
-  if(rec.created_at) return isoToKstHM(rec.created_at);
-  return '—';
+
+function extract(row){
+  var bag=flatten(row);
+  return {
+    id      : row.id!=null ? row.id : (row.token||null),
+    token   : row.token||null,
+    company : pick(bag,[/업체|회사|company|contractor|vendor/i, /작업.*업체/i]) || '(업체명 미상)',
+    place   : pick(bag,[/장소|위치|구역|place|location|area|site/i]),
+    person  : pick(bag,[/담당|책임|감독|성명|이름|responsible|manager|name|작성자/i]),
+    work    : pick(bag,[/작업명|공사명|작업내용|work|job|title|description/i]),
+    time    : pick(bag,[/시작.*시간|작업.*시간|start|시간|time|created/i]),
+    signed  : !!(row.signed_at || row.signedAt || /signed|완료|승인/i.test(String(row.status||''))
+               || pick(bag,[/section4|승인자.*서명|approver.*sign/i])),
+    deleted : !!(row.deleted_at || row.deletedAt)
+  };
 }
-function statusInfo(s){
-  if(s === 'signed') return {cls:'done', label:'승인 완료'};
-  return {cls:'prog', label:'결재 진행중'};
+function fmtTime(s){
+  if(!s) return '';
+  var d=new Date(s);
+  if(isNaN(d)) return s;                       // 이미 "14:30" 같은 텍스트면 그대로
+  var k=new Date(d.getTime()+(9*3600000)-(d.getTimezoneOffset()*60000)*0);
+  try{ return pad(d.getHours())+':'+pad(d.getMinutes()); }catch(e){ return s; }
 }
-function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
 
 /* ===================== 렌더 ===================== */
-var seenTokens = {};   // 새 카드 깜빡임 판별용
-var firstLoad = true;
+function render(rows){
+  // 삭제(소프트삭제)된 건 숨김
+  var list = rows.filter(function(r){ return !extract(r).deleted; });
 
-function render(records){
-  var grid = document.getElementById('grid');
-  var total = records.length, prog = 0, done = 0;
+  var companies={}, pending=0, done=0, html='';
+  list.forEach(function(r){
+    var e=extract(r);
+    if(e.company) companies[e.company]=1;
+    if(e.signed) done++; else pending++;
 
-  if(records.length === 0){
-    grid.innerHTML = '<div class="empty"><div class="ico">🏗️</div>'+
-      '<div class="msg">등록된 외주작업이 없습니다</div>'+
-      '<div class="sub">작업허가서가 제출되면 이 화면에 자동으로 표시됩니다</div></div>';
-  } else {
-    var html = '';
-    records.forEach(function(r){
-      var st = statusInfo(r.status);
-      if(st.cls === 'done') done++; else prog++;
-      var company = esc(r.company_name || '(업체명 미입력)');
-      var place   = esc(parsePlace(r.form_fields, r.project_name));
-      var mgr     = esc(parseManagers(r.managers));
-      var time    = esc(startTime(r));
-      var people  = r.worker_count ? '<span class="chip">'+esc(r.worker_count)+'명</span>' : '';
-      var isNew   = (!firstLoad && r.token && !seenTokens[r.token]) ? ' is-new' : '';
-      html +=
-      '<div class="card '+st.cls+isNew+'">'+
-        '<div class="card-top">'+
-          '<div class="company">'+company+'</div>'+
-          '<div class="badge '+st.cls+'"><span class="bdot"></span>'+st.label+'</div>'+
-        '</div>'+
+    var idAttr = e.id!=null ? ' data-id="'+esc(e.id)+'"' : '';
+    var tkAttr = e.token ? ' data-token="'+esc(e.token)+'"' : '';
+    html+=''+
+      '<div class="card '+(e.signed?'signed':'')+'"'+idAttr+tkAttr+'>'+
+        '<button class="del" title="작업 삭제" onclick="delWork(this)">🗑</button>'+
+        '<div class="company">'+esc(e.company)+'</div>'+
         '<div class="rows">'+
-          '<div class="row"><span class="k">작업장소</span><span class="v">'+place+'</span></div>'+
-          '<div class="row"><span class="k">담당자</span><span class="v">'+mgr+'</span></div>'+
-          '<div class="row"><span class="k">작업시작</span><span class="v time">'+time+people+'</span></div>'+
+          (e.work   ? '<div class="row"><span class="ic">🧰</span><span class="v">'+esc(e.work)+'</span></div>':'')+
+          (e.place  ? '<div class="row"><span class="ic">📍</span><span class="v">'+esc(e.place)+'</span></div>':'')+
+          (e.person ? '<div class="row"><span class="ic">👷</span><span class="v">'+esc(e.person)+'</span></div>':'')+
+          (e.time   ? '<div class="row"><span class="ic">🕐</span><span class="v">'+esc(fmtTime(e.time))+'</span></div>':'')+
         '</div>'+
+        '<div class="badge"><span class="d"></span>'+(e.signed?'작업완료':'작업진행중')+'</div>'+
       '</div>';
+  });
+
+  document.getElementById('stCompany').textContent = Object.keys(companies).length;
+  document.getElementById('stPending').textContent = pending;
+  document.getElementById('stDone').textContent    = done;
+
+  document.getElementById('cards').innerHTML = html ||
+    '<div class="empty"><div class="big">📋</div>해당 날짜에 등록된 외주작업이 없습니다.</div>';
+}
+
+/* ===================== 삭제(소프트) ===================== */
+async function delWork(btn){
+  var card=btn.closest('.card');
+  var id=card.getAttribute('data-id');
+  var token=card.getAttribute('data-token');
+  var name=(card.querySelector('.company')||{}).textContent||'이 작업';
+
+  if(!confirm('“'+name+'” 작업을 목록에서 삭제할까요?\n\n· 화면에서 숨겨집니다 (중복/오기재 정리용)\n· 기록은 DB에 남아 나중에 복구 가능합니다.')) return;
+
+  btn.disabled=true; btn.textContent='…';
+  var body={}; if(id) body.id=isNaN(+id)?id:+id; else if(token) body.token=token;
+
+  try{
+    var res=await fetch(DELETE_URL,{
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
-    grid.innerHTML = html;
+    var data=await res.json().catch(function(){return{};});
+    if(!res.ok || !data.success){
+      throw new Error((data && data.error) ? data.error : ('HTTP '+res.status));
+    }
+    // 즉시 화면에서 제거 후 새로고침
+    card.style.transition='.25s'; card.style.opacity='0'; card.style.transform='scale(.96)';
+    setTimeout(load, 250);
+  }catch(err){
+    btn.disabled=false; btn.textContent='🗑';
+    alert('삭제 실패: '+err.message+'\n\n(서버에 api/delete-permit.js 가 올라가 있고, permits 테이블에 deleted_at 칼럼이 있는지 확인하세요.)');
   }
-
-  document.getElementById('cTotal').textContent = total;
-  document.getElementById('cProg').textContent  = prog;
-  document.getElementById('cDone').textContent  = done;
-
-  // seenTokens 갱신
-  var next = {};
-  records.forEach(function(r){ if(r.token) next[r.token] = true; });
-  seenTokens = next;
-  firstLoad = false;
 }
 
 /* ===================== 데이터 로드 ===================== */
-function selectedDate(){
-  var v = document.getElementById('datePick').value;
-  return v || kstDateStr(nowKST());
-}
-function updateDayTitle(){
-  var d = selectedDate();
-  var todayStr = kstDateStr(nowKST());
-  document.getElementById('dayTitle').textContent = (d === todayStr) ? '금일 작업 현황' : d + ' 작업 현황';
-}
-
 async function load(){
-  updateDayTitle();
-  var url = API_URL + '?date=' + encodeURIComponent(selectedDate());
+  var dateStr=document.getElementById('datePick').value || kstDateStr(nowKST());
+  var isToday = (dateStr===kstDateStr(nowKST()));
+  document.getElementById('gridTitle').textContent = isToday ? '금일 작업 현황' : (dateStr+' 작업 현황');
+
   try{
-    var res = await fetch(url, { cache:'no-store' });
-    if(!res.ok){ throw new Error('HTTP '+res.status+' '+(await res.text()).slice(0,200)); }
-    var json = await res.json();
-    if(json && json.success === false){ throw new Error(json.error || '서버 오류'); }
-    var data = (json && Array.isArray(json.permits)) ? json.permits : [];
-    document.getElementById('errbar').style.display = 'none';
-    render(data);
-    var k = nowKST();
-    document.getElementById('updated').textContent = '최근 갱신 '+pad(k.getHours())+':'+pad(k.getMinutes())+':'+pad(k.getSeconds());
-    document.getElementById('liveTxt').textContent = '실시간 연동';
+    var res=await fetch(LIST_URL+'?date='+encodeURIComponent(dateStr),{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status+' '+(await res.text()).slice(0,160));
+    var data=await res.json();
+    var rows = Array.isArray(data) ? data : (data.permits||data.data||[]);
+    render(rows);
+
+    document.getElementById('errbar').style.display='none';
+    var live=document.getElementById('live'); live.className='live';
+    document.getElementById('liveTxt').textContent='실시간 연동';
   }catch(err){
-    var bar = document.getElementById('errbar');
-    bar.style.display = 'block';
-    bar.innerHTML = '⚠ 데이터를 불러오지 못했습니다 — '+esc(err.message)+
-      '<br>· 이 화면을 배포 주소(bnct-safety.vercel.app/dashboard)로 열었는지, /api/list-permits 가 배포됐는지 확인하세요.';
-    document.getElementById('liveTxt').textContent = '연결 오류';
+    var bar=document.getElementById('errbar'); bar.style.display='block';
+    bar.innerHTML='⚠ 데이터를 불러오지 못했습니다 — '+esc(err.message)+
+      '<br>· '+esc(LIST_URL)+' 가 정상 응답하는지, Supabase 읽기 권한(RLS)을 확인하세요.';
+    var live=document.getElementById('live'); live.className='live off';
+    document.getElementById('liveTxt').textContent='연결 오류';
   }
 }
 
-/* ===================== 이벤트 / 루프 ===================== */
-document.getElementById('datePick').value = kstDateStr(nowKST());
-document.getElementById('btnRefresh').addEventListener('click', load);
-document.getElementById('btnToday').addEventListener('click', function(){
-  document.getElementById('datePick').value = kstDateStr(nowKST()); load();
+/* ===================== 시작 ===================== */
+tickClock(); setInterval(tickClock,1000);
+document.getElementById('datePick').value=kstDateStr(nowKST());
+document.getElementById('btnRefresh').addEventListener('click',load);
+document.getElementById('btnToday').addEventListener('click',function(){
+  document.getElementById('datePick').value=kstDateStr(nowKST()); load();
 });
-document.getElementById('datePick').addEventListener('change', load);
-
-load();
-setInterval(load, REFRESH_MS);
+document.getElementById('datePick').addEventListener('change',load);
+load(); setInterval(load,REFRESH_MS);
 </script>
 </body>
 </html>
