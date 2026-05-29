@@ -44,7 +44,7 @@
     padding:5px 13px;border-radius:999px;background:var(--ok-bg);
     color:var(--ok);font-size:13px;font-weight:800;
   }
-  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:blink 1.4s infinite}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
   .live.off{background:rgba(239,68,68,.14);color:var(--danger)}
   .live.off .dot{background:var(--danger);animation:none}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
@@ -86,7 +86,7 @@
   .card{
     position:relative;background:linear-gradient(160deg,var(--panel),var(--panel2));
     border:1px solid var(--line);border-left:7px solid var(--navy2);
-    border-radius:16px;padding:20px 24px 18px;animation:pop .5s ease;
+    border-radius:16px;padding:20px 24px 18px;
   }
   .card.signed{border-left-color:var(--ok)}
   @keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -101,7 +101,7 @@
     padding:8px 17px;border-radius:999px;font-size:15px;font-weight:900;
     background:var(--warn-bg);color:var(--warn);
   }
-  .badge .d{width:8px;height:8px;border-radius:50%;background:var(--warn);animation:blink 1.4s infinite}
+  .badge .d{width:8px;height:8px;border-radius:50%;background:var(--warn)}
   .card.signed .badge{background:var(--ok-bg);color:var(--ok)}
   .card.signed .badge .d{background:var(--ok);animation:none}
 
@@ -281,8 +281,14 @@ function render(rows){
   document.getElementById('stPending').textContent = pending;
   document.getElementById('stDone').textContent    = done;
 
-  document.getElementById('cards').innerHTML = html ||
+  var finalHtml = html ||
     '<div class="empty"><div class="big">📋</div>해당 날짜에 등록된 외주작업이 없습니다.</div>';
+  var box = document.getElementById('cards');
+  // 내용이 바뀐 경우에만 다시 그린다 → 새로고침마다 화면이 깜빡이지 않음
+  if (box.__sig !== finalHtml) {
+    box.innerHTML = finalHtml;
+    box.__sig = finalHtml;
+  }
 }
 
 /* ===================== 삭제(소프트) ===================== */
