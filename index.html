@@ -6,19 +6,19 @@
 <title>BNCT 외주작업 현황</title>
 <style>
   :root{
-    --bg:#eef1f7; --panel:#ffffff; --panel2:#ffffff;
-    --line:rgba(20,32,60,.10); --text:#16233d; --muted:#5b6b86;
+    --bg:#0b1220; --panel:#111c30; --panel2:#16243d;
+    --line:rgba(255,255,255,.07); --text:#eaf0fb; --muted:#8da2c4;
     --navy:#1d4ed8; --navy2:#3b82f6;
-    --warn:#b45309; --warn-bg:rgba(245,158,11,.16);
-    --ok:#15803d; --ok-bg:rgba(34,197,94,.16);
-    --danger:#dc2626;
-    --shadow:0 6px 22px rgba(20,32,60,.08);
+    --warn:#f59e0b; --warn-bg:rgba(245,158,11,.14);
+    --ok:#22c55e; --ok-bg:rgba(34,197,94,.14);
+    --danger:#ef4444;
+    --shadow:0 6px 22px rgba(0,0,0,.28);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{
     font-family:'맑은 고딕','Malgun Gothic',system-ui,sans-serif;
-    background:radial-gradient(1200px 600px at 80% -10%,#e3e9f6 0%,var(--bg) 60%);
+    background:radial-gradient(1200px 600px at 80% -10%,#16294a 0%,var(--bg) 60%);
     color:var(--text); min-height:100vh; padding:16px 22px 24px;
   }
 
@@ -45,21 +45,21 @@
     color:var(--ok);font-size:12px;font-weight:800;
   }
   .live .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:blink 1.4s infinite}
-  .live.off{background:rgba(220,38,38,.12);color:var(--danger)}
+  .live.off{background:rgba(239,68,68,.14);color:var(--danger)}
   .live.off .dot{background:var(--danger);animation:none}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
   /* ===== Stats ===== */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
   .stat{
-    background:var(--panel);box-shadow:var(--shadow);
+    background:linear-gradient(160deg,var(--panel),var(--panel2));
     border:1px solid var(--line);border-radius:14px;padding:14px 20px;
     display:flex;flex-direction:column;gap:3px;
   }
   .stat .label{font-size:13px;color:var(--muted);font-weight:700}
   .stat .num{font-size:34px;font-weight:900;line-height:1}
   .stat .num small{font-size:15px;font-weight:800;color:var(--muted);margin-left:4px}
-  .stat.s1 .num{color:var(--navy)}
+  .stat.s1 .num{color:#fff}
   .stat.s2 .num{color:var(--warn)}
   .stat.s3 .num{color:var(--ok)}
 
@@ -69,23 +69,23 @@
   .ctrl .right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   input[type=date],.btn{
     font-family:inherit;font-size:13px;font-weight:700;
-    background:var(--panel);color:var(--text);
+    background:var(--panel2);color:var(--text);
     border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;
   }
   .btn:hover{border-color:var(--navy2)}
   .btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
-  input[type=date]{color-scheme:light}
+  input[type=date]{color-scheme:dark}
 
   #errbar{
-    display:none;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.35);
-    color:#b91c1c;border-radius:12px;padding:14px 18px;font-size:14px;font-weight:600;line-height:1.6;margin-bottom:16px;
+    display:none;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);
+    color:#fecaca;border-radius:12px;padding:14px 18px;font-size:14px;font-weight:600;line-height:1.6;margin-bottom:16px;
   }
 
   /* ===== Cards ===== */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
   .card{
-    position:relative;background:var(--panel);box-shadow:var(--shadow);
-    border:1px solid var(--line);border-left:6px solid var(--warn);
+    position:relative;background:linear-gradient(160deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-left:6px solid var(--navy2);
     border-radius:14px;padding:16px 18px 15px;animation:pop .5s ease;
   }
   .card.signed{border-left-color:var(--ok)}
@@ -107,8 +107,8 @@
 
   .del{
     position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:9px;
-    background:rgba(220,38,38,.10);border:1px solid rgba(220,38,38,.28);
-    color:var(--danger);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);
+    color:#fca5a5;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
     transition:.15s;
   }
   .del:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
