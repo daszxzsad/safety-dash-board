@@ -273,7 +273,11 @@ async function delWork(btn){
   if(!confirm('“'+name+'” 작업을 목록에서 삭제할까요?\n\n· 화면에서 숨겨집니다 (중복/오기재 정리용)\n· 기록은 DB에 남아 나중에 복구 가능합니다.')) return;
 
   btn.disabled=true; btn.textContent='…';
-  var body={}; if(id) body.id=isNaN(+id)?id:+id; else if(token) body.token=token;
+  // 토큰이 가장 확실한 고유키(항상 존재) → 토큰 우선. id는 UUID 형식일 때만 사용.
+  var isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  var body={};
+  if(token){ body.token=token; }
+  else if(id){ body.id = isUuid.test(id) ? id : (isNaN(+id)? id : +id); }
 
   try{
     var res=await fetch(DELETE_URL,{
